@@ -10,18 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app.R;
+import com.example.app.data.DataModel;
+import com.example.app.data.XMLParser;
 
 public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        DataModel model;
+        XMLParser parser = new XMLParser();
+
+        parser.parseDataFromXML(getResources(), R.xml.example);
+
         super.onCreate(savedInstanceState);
         DrawView screen = new DrawView(this);
         setContentView(screen);
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
