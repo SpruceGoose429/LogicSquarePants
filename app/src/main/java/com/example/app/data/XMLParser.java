@@ -21,9 +21,9 @@ public class XMLParser {
     public static final String ROW = "row";
     public static final String NODE = "node";
 
-    public DataModel parseDataFromXML(Resources res, int xml) {
+    public void parseDataFromXML(Resources res, int xml) {
 
-        DataModel model = new DataModel();
+        DataModel model = DataModel.getDataModel();
         boolean tempArr[][] = null;
         int rowIndex = -1;
 
@@ -58,6 +58,5 @@ public class XMLParser {
         }
 
         model.setNodes(tempArr);
-        return model;
     }
 }

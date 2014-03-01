@@ -1,5 +1,6 @@
 package com.example.app.game;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,24 +9,44 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.example.app.R;
 import com.example.app.data.DataModel;
+import com.example.app.data.SpriteManager;
 import com.example.app.data.XMLParser;
 
 public class MainActivity extends ActionBarActivity {
 
+    // singleton
+    private static MainActivity main;
+    public static MainActivity getMain(){return main;}
+
+    private SpriteManager spriteManager;
+    public SpriteManager getSpriteManager(){return this.spriteManager;}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        DataModel model;
-        XMLParser parser = new XMLParser();
-
-        parser.parseDataFromXML(getResources(), R.xml.example);
-
         super.onCreate(savedInstanceState);
+        // set the singleton
+        main = this;
+        // remove title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // create the screen
         DrawView screen = new DrawView(this);
+        // set the content view
         setContentView(screen);
+        ///////////////////////////////////preliminaries done
+        // init the DataModel so it knows screen dimensions
+        DataModel.getDataModel();
+        spriteManager = new SpriteManager();
+        XMLParser parser = new XMLParser();
+        parser.parseDataFromXML(getResources(), R.xml.example);
+        spriteManager.initBackground(BitmapFactory.decodeResource(getResources(), R.drawable.background));
+
     }
 
     @Override
