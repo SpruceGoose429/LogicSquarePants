@@ -21,7 +21,7 @@ public class MainActivity extends ActionBarActivity {
         DataModel model;
         XMLParser parser = new XMLParser();
 
-        parser.parseDataFromXML(getResources(), R.xml.example);
+        model = parser.parseDataFromXML(getResources(), R.xml.example);
 
         super.onCreate(savedInstanceState);
         DrawView screen = new DrawView(this);
