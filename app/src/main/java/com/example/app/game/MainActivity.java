@@ -1,6 +1,10 @@
 package com.example.app.game;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -44,8 +48,13 @@ public class MainActivity extends ActionBarActivity {
         DataModel.getDataModel();
         spriteManager = new SpriteManager();
         XMLParser parser = new XMLParser();
-        parser.parseDataFromXML(getResources(), R.xml.example);
-        spriteManager.initBackground(BitmapFactory.decodeResource(getResources(), R.drawable.background));
+        parser.parseDataFromXML(getResources(), R.xml.level1);
+        Bitmap b = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
+        Canvas backgroundCanvas = new Canvas(b);
+        Paint p = new Paint();
+        p.setColor(Color.rgb(200,200,200));
+        backgroundCanvas.drawRect(0,0,1,1, p);
+        spriteManager.initBackground(b);
 
     }
 
