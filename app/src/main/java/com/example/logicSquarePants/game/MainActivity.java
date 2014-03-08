@@ -1,5 +1,13 @@
 package com.example.app.game;
 
+<<<<<<< HEAD:app/src/main/java/com/example/logicSquarePants/game/MainActivity.java
+=======
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+>>>>>>> 9c3e931959dc95e565deb13feabeae63eea487ee:app/src/main/java/com/example/app/game/MainActivity.java
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -26,6 +34,22 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         DrawView screen = new DrawView(this);
         setContentView(screen);
+<<<<<<< HEAD:app/src/main/java/com/example/logicSquarePants/game/MainActivity.java
+=======
+        ///////////////////////////////////preliminaries done
+        // init the DataModel so it knows screen dimensions
+        DataModel.getDataModel();
+        spriteManager = new SpriteManager();
+        XMLParser parser = new XMLParser();
+        parser.parseDataFromXML(getResources(), R.xml.level1);
+        Bitmap b = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
+        Canvas backgroundCanvas = new Canvas(b);
+        Paint p = new Paint();
+        p.setColor(Color.rgb(200,200,200));
+        backgroundCanvas.drawRect(0,0,1,1, p);
+        spriteManager.initBackground(b);
+
+>>>>>>> 9c3e931959dc95e565deb13feabeae63eea487ee:app/src/main/java/com/example/app/game/MainActivity.java
     }
 
     @Override

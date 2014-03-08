@@ -1,5 +1,6 @@
 package com.example.logicSquarePants.game;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -50,17 +51,29 @@ public class DrawView extends View {
         // Restore scaling
         canvas.restore();
 
-        OnTouchListener otl = new OnTouchListener() {
+        @SuppressLint("DrawAllocation") OnTouchListener otl = new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent ev) {
+                int col;
+                int row;
                 // Let the ScaleGestureDetector inspect all events.
+                DataModel dataModel = DataModel.getDataModel();
                 mScaleDetector.onTouchEvent(ev);
                 if (ev.getPointerCount() > 1){
                     dragTime = System.currentTimeMillis() + 200;
                 }
                 if (ev.getAction() == MotionEvent.ACTION_DOWN){
-                    lastX = ev.getX();
-                    lastY = ev.getY();
+                    lastX = DataModel.getDataModel().toUnscaledX(ev.getX());
+                    lastY = DataModel.getDataModel().toUnscaledY(ev.getY());
+                    col = dataModel.calculateCol(lastX);
+                    row = dataModel.calculateRow(lastY);
+                    if(col < 0 || col >= dataModel.getColCount() || row < 0 || row >= dataModel.getRowCount())
+                        return true;
+                    if(dataModel.getCurrentNodes()[row][col] == false) {
+                        dataModel.getCurrentNodes()[row][col] = true;
+                    } else if(dataModel.getCurrentNodes()[row][col] == true) {
+                        dataModel.getCurrentNodes()[row][col] = false;
+                    }
                 } else if (ev.getAction() == MotionEvent.ACTION_MOVE && ev.getPointerCount() == 1 && System.currentTimeMillis() >= dragTime){
                     float newX = ev.getX();
                     float newY = ev.getY();

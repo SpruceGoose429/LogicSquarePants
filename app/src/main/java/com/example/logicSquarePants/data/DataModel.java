@@ -28,11 +28,14 @@ public class DataModel {
     private float transY;
     // current scale of the screen
     private float scaleFactor;
+    public static final int NODE_WIDTH = 200;
+    public static final int NODE_HEIGHT = 200;
 
     // Game specific stuff
     private int rowCount;
     private int colCount;
-    private boolean[][] nodes;
+    private boolean[][] correctNodes;
+    private boolean[][] currentNodes;
 
 
     // Singleton getter
@@ -72,25 +75,24 @@ public class DataModel {
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
     }
-
     public void setColumnCount(int colCount) {
         this.colCount = colCount;
     }
-
-    public void setNodes(boolean[][] nodes) {
-        this.nodes = nodes;
+    public void setCorrectNodes(boolean[][] nodes) {
+        this.correctNodes = nodes;
     }
-
+    public void setCurrentNodes(boolean[][] nodes) {
+        this.currentNodes = nodes;
+    }
     public int getRowCount() {
         return rowCount;
     }
-
     public int getColCount() {
         return colCount;
     }
 
-    public boolean[][] getNodes() {
-        return nodes;
+    public boolean[][] getCorrectNodes() {
+        return correctNodes;
     }
 
     public static float toRelativeWidth(float x){
@@ -104,6 +106,18 @@ public class DataModel {
     }
     public static float toAbsoluteHeight(float y){
         return (y * (float)screenHeight / 100.0f);
+    }
+
+    public int calculateCol(float x) {
+        return (int)(x - 10) / NODE_WIDTH;
+    }
+
+    public int calculateRow(float y) {
+        return (int)(y - 10 ) / NODE_HEIGHT;
+    }
+
+    public boolean[][] getCurrentNodes() {
+        return currentNodes;
     }
 
     public static Bitmap convertImage565(Bitmap image){
