@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.example.app.R;
 import com.example.logicSquarePants.game.MainActivity;
 
 /**
@@ -37,6 +38,7 @@ public class DataModel {
     private boolean[][] correctNodes;
     private boolean[][] currentNodes;
 
+    private boolean menuOn;
 
     // Singleton getter
     public static DataModel getDataModel(){
@@ -47,6 +49,7 @@ public class DataModel {
     }
 
     private DataModel(){
+        menuOn = true;
         transX = 0.0f;
         transY = 0.0f;
         scaleFactor = 1.0f;
@@ -90,6 +93,8 @@ public class DataModel {
     public int getColCount() {
         return colCount;
     }
+    public boolean getMenuOn(){ return this.menuOn;}
+    public void setMenuOn(boolean menuOn){this.menuOn = menuOn;}
 
     public boolean[][] getCorrectNodes() {
         return correctNodes;

@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.provider.ContactsContract;
 
 import com.example.logicSquarePants.gui.LevelSelectManager;
 
@@ -45,26 +44,31 @@ public class SpriteManager {
             s.drawSelf(c);
         }
 
-        levelSelectManager.showScreen(c, 1);
+        if (DataModel.getDataModel().getMenuOn()){
+            levelSelectManager.showScreen(c, 1);
+            transX = 0;
+            transY = 0;
+            DataModel.getDataModel().setScaleFactor(1.0f);
+        } else {
+            Paint paint = new Paint();
+            paint.setStrokeWidth(3);
+            paint.setColor(Color.GREEN);
 
-        Paint paint = new Paint();
-        paint.setStrokeWidth(3);
-        paint.setColor(Color.GREEN);
-
-        for (int i=0; i<dataModel.getRowCount(); i++) {
-            for(int j=0; j<dataModel.getColCount(); j++) {
-                if(dataModel.getCurrentNodes()[i][j] == true) {
-                    c.drawRect(10 + j * DataModel.NODE_WIDTH + transX, 10 + i * DataModel.NODE_HEIGHT + transY, 10 + (j + 1) * DataModel.NODE_WIDTH + transX, 10 + (i + 1) * DataModel.NODE_HEIGHT + transY, paint);
+            for (int i=0; i<dataModel.getRowCount(); i++) {
+                for(int j=0; j<dataModel.getColCount(); j++) {
+                    if(dataModel.getCurrentNodes()[i][j] == true) {
+                        c.drawRect(10 + j * DataModel.NODE_WIDTH + transX, 10 + i * DataModel.NODE_HEIGHT + transY, 10 + (j + 1) * DataModel.NODE_WIDTH + transX, 10 + (i + 1) * DataModel.NODE_HEIGHT + transY, paint);
+                    }
                 }
             }
-        }
-        paint.setColor(Color.BLACK);
-        for (int i = 0 ; i <= DataModel.getDataModel().getColCount(); i++){
-            c.drawLine(i * DataModel.NODE_WIDTH + 10 + transX, 10 + transY, i * DataModel.NODE_WIDTH + 10 + transX, DataModel.NODE_WIDTH * DataModel.getDataModel().getRowCount() + 10 + transY, paint);
-        }
+            paint.setColor(Color.BLACK);
+            for (int i = 0 ; i <= DataModel.getDataModel().getColCount(); i++){
+                c.drawLine(i * DataModel.NODE_WIDTH + 10 + transX, 10 + transY, i * DataModel.NODE_WIDTH + 10 + transX, DataModel.NODE_WIDTH * DataModel.getDataModel().getRowCount() + 10 + transY, paint);
+            }
 
-        for (int j = 0 ; j <= DataModel.getDataModel().getRowCount(); j++) {
-            c.drawLine(10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, DataModel.NODE_HEIGHT * DataModel.getDataModel().getColCount() + 10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, paint);
+            for (int j = 0 ; j <= DataModel.getDataModel().getRowCount(); j++) {
+                c.drawLine(10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, DataModel.NODE_HEIGHT * DataModel.getDataModel().getColCount() + 10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, paint);
+            }
         }
     }
 }
