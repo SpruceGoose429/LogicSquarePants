@@ -1,4 +1,4 @@
-package com.example.logicSquarePants.game;
+package com.example.app.game;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-import com.example.logicSquarePants.data.DataModel;
+import com.example.app.data.DataModel;
 
 /**
  * Created by John on 2/28/14.
@@ -77,10 +77,8 @@ public class DrawView extends View {
                 } else if (ev.getAction() == MotionEvent.ACTION_MOVE && ev.getPointerCount() == 1 && System.currentTimeMillis() >= dragTime){
                     float newX = ev.getX();
                     float newY = ev.getY();
-                    if (DataModel.getDataModel().getMenuOn() == false){
-                        DataModel.getDataModel().setTransX(DataModel.getDataModel().getTransX() + (newX - lastX));
-                        DataModel.getDataModel().setTransY(DataModel.getDataModel().getTransY() + (newY - lastY));
-                    }
+                    DataModel.getDataModel().setTransX(DataModel.getDataModel().getTransX() + (newX - lastX));
+                    DataModel.getDataModel().setTransY(DataModel.getDataModel().getTransY() + (newY - lastY));
                     // make sure there is no white space
                     DataModel.getDataModel().examineBounds();
                     lastX = newX;
@@ -98,10 +96,8 @@ public class DrawView extends View {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            if (DataModel.getDataModel().getMenuOn()){
-                return true;
-            }
             mScaleFactor *= detector.getScaleFactor();
+
             // Don't let the object get too small or too large.
             mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
             //Update the dataModel with the scale factor

@@ -1,2 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><pants><rowCount>8</rowCount><columnCount>7</columnCount><row/><row><Node>2</Node><Node>3</Node><Node>4</Node></row><row><Node>2</Node><Node>4</Node></row><row><Node>2</Node><Node>3</Node><Node>4</Node></row><row><Node>3</Node></row><row><Node>2</Node><Node>3</Node><Node>4</Node></row><row><Node>3</Node></row><row><Node>2</Node><Node>4</Node></row></pants>
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><pants><rowCount>3</rowCount><columnCount>4</columnCount><row><Node>0</Node></row><row><Node>1</Node><Node>3</Node></row><row><Node>2</Node></row></pants>
