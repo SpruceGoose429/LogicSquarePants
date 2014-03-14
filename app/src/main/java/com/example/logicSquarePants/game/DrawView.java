@@ -3,7 +3,7 @@ package com.example.logicSquarePants.game;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.provider.ContactsContract;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -17,12 +17,12 @@ import com.example.logicSquarePants.data.DataModel;
 public class DrawView extends View {
 
     //for zooming in and out
+    private RectF mCurrentViewport =
+            new RectF(0, 0, 10, 10);
     private ScaleGestureDetector mScaleDetector;
     private float mScaleFactor = 1.f;
 
     private boolean moved;
-
-    MotionEvent me;
 
     // for moving the map
     float lastX;
@@ -110,6 +110,13 @@ public class DrawView extends View {
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+
+            lastX = detector.getCurrentSpanX();
+            lastY = detector.getCurrentSpanY();
+            return true;
+        }
 
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
@@ -118,25 +125,15 @@ public class DrawView extends View {
                 return true;
             }
 
-            MotionEvent.PointerCoords outPointerCoordinates = new MotionEvent.PointerCoords();
-            me.getPointerCoords(0, outPointerCoordinates);
-            float x1 = outPointerCoordinates.x;
-            float y1 = outPointerCoordinates.y;
+            float spanX = detector.getCurrentSpanX();
+            float spanY = detector.getCurrentSpanY();
 
-            me.getPointerCoords(1, outPointerCoordinates);
-            float x2 = outPointerCoordinates.x;
-            float y2 = outPointerCoordinates.y;
+            float newWidth = lastX / spanX * mCurrentViewport.width();
+            float newHeight = lastY / spanX * mCurrentViewport.height();
 
-            float transRatio = 3000;
+            float focusX = detector.getFocusX();
+            float focusY = detector.getFocusY();
 
-            float x3 = (x2 + x1) / 2;
-            float y3 = (y2 + y1) / 2;
-
-            x3 = DataModel.toRelativeWidth(x3);
-            y3 = DataModel.toRelativeHeight(y3);
-
-            DataModel.getDataModel().setTransX(DataModel.getDataModel().getTransX() + (transRatio * x3/100.0f));
-            DataModel.getDataModel().setTransY(DataModel.getDataModel().getTransY() + (transRatio * y3/100.0f));
 
             mScaleFactor *= detector.getScaleFactor();
             // Don't let the object get too small or too large.
