@@ -55,6 +55,8 @@ public class SpriteManager {
             paint.setTextSize(100);
             paint.setColor(Color.BLUE);
 
+            //test change
+
             if(dataModel.isWon()) {
                 c.drawText("You win!", 500, 500, paint);
                 return;
