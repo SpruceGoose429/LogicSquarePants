@@ -1,4 +1,4 @@
-package com.example.app.data;
+package com.example.logicSquarePants.data;
 
 import android.graphics.Bitmap;
 
