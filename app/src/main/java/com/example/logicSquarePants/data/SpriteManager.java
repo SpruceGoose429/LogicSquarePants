@@ -44,9 +44,9 @@ public class SpriteManager {
         for (Sprite s : sprites){
             s.drawSelf(c);
         }
-<<<<<<< HEAD:app/src/main/java/com/example/logicSquarePants/data/SpriteManager.java
+
         levelSelectManager.showScreen(c, 1);
-=======
+
         Paint paint = new Paint();
         paint.setStrokeWidth(3);
         paint.setColor(Color.GREEN);
@@ -66,6 +66,5 @@ public class SpriteManager {
         for (int j = 0 ; j <= DataModel.getDataModel().getRowCount(); j++) {
             c.drawLine(10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, DataModel.NODE_HEIGHT * DataModel.getDataModel().getColCount() + 10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, paint);
         }
->>>>>>> 9c3e931959dc95e565deb13feabeae63eea487ee:app/src/main/java/com/example/app/data/SpriteManager.java
     }
 }

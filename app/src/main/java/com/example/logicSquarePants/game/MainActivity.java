@@ -1,13 +1,10 @@
-package com.example.app.game;
+package com.example.logicSquarePants.game;
 
-<<<<<<< HEAD:app/src/main/java/com/example/logicSquarePants/game/MainActivity.java
-=======
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
->>>>>>> 9c3e931959dc95e565deb13feabeae63eea487ee:app/src/main/java/com/example/app/game/MainActivity.java
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -18,24 +15,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app.R;
-import com.example.app.data.DataModel;
-import com.example.app.data.XMLParser;
+import com.example.logicSquarePants.data.DataModel;
+import com.example.logicSquarePants.data.SpriteManager;
+import com.example.logicSquarePants.data.XMLParser;
+import com.example.logicSquarePants.game.DrawView;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static MainActivity main;
+    private SpriteManager spriteManager;
+
+    public static MainActivity getMain(){
+        return main;
+    }
+    public SpriteManager getSpriteManager(){return this.spriteManager;}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        DataModel model;
-        XMLParser parser = new XMLParser();
-
-        model = parser.parseDataFromXML(getResources(), R.xml.example);
-
         super.onCreate(savedInstanceState);
+
+        main = this;
         DrawView screen = new DrawView(this);
         setContentView(screen);
-<<<<<<< HEAD:app/src/main/java/com/example/logicSquarePants/game/MainActivity.java
-=======
+
         ///////////////////////////////////preliminaries done
         // init the DataModel so it knows screen dimensions
         DataModel.getDataModel();
@@ -49,7 +51,6 @@ public class MainActivity extends ActionBarActivity {
         backgroundCanvas.drawRect(0,0,1,1, p);
         spriteManager.initBackground(b);
 
->>>>>>> 9c3e931959dc95e565deb13feabeae63eea487ee:app/src/main/java/com/example/app/game/MainActivity.java
     }
 
     @Override

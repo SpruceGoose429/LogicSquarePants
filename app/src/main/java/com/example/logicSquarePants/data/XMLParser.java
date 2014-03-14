@@ -2,10 +2,8 @@ package com.example.logicSquarePants.data;
 
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
-<<<<<<< HEAD:app/src/main/java/com/example/logicSquarePants/data/XMLParser.java
-=======
 import android.util.Xml;
->>>>>>> 9c3e931959dc95e565deb13feabeae63eea487ee:app/src/main/java/com/example/app/data/XMLParser.java
+
 
 import org.xmlpull.v1.XmlPullParserException;
 
