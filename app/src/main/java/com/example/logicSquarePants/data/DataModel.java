@@ -1,4 +1,4 @@
-package com.example.app.data;
+package com.example.logicSquarePants.data;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,7 +9,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.app.game.MainActivity;
+import com.example.app.R;
+import com.example.logicSquarePants.game.MainActivity;
 
 /**
  * Created by John on 2/28/14.
@@ -20,8 +21,8 @@ public class DataModel {
     private static DataModel dataModel;
 
     // Screen stuff
-    private static int screenWidth;
-    private static int screenHeight;
+    public static int screenWidth;
+    public static int screenHeight;
     private View.OnTouchListener onTouchListener;
     // current translation
     private float transX;
@@ -37,7 +38,11 @@ public class DataModel {
     private boolean[][] correctNodes;
     private boolean[][] currentNodes;
 
+
     private boolean won;
+
+    private boolean menuOn;
+
 
     // Singleton getter
     public static DataModel getDataModel(){
@@ -48,6 +53,7 @@ public class DataModel {
     }
 
     private DataModel(){
+        menuOn = true;
         transX = 0.0f;
         transY = 0.0f;
         scaleFactor = 1.0f;
@@ -92,6 +98,8 @@ public class DataModel {
     public int getColCount() {
         return colCount;
     }
+    public boolean getMenuOn(){ return this.menuOn;}
+    public void setMenuOn(boolean menuOn){this.menuOn = menuOn;}
 
     public boolean[][] getCorrectNodes() {
         return correctNodes;
