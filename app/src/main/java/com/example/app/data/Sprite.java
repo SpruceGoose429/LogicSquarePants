@@ -1,4 +1,4 @@
-package com.example.logicSquarePants.data;
+package com.example.app.data;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,7 +11,6 @@ public class Sprite {
     private SpriteType spriteType;
     private float x;
     private float y;
-
 
     public Sprite(SpriteType spriteType, float xPercent, float yPercent){
         this.spriteType = spriteType;

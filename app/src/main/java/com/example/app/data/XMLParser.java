@@ -1,9 +1,9 @@
-package com.example.logicSquarePants.data;
+package com.example.app.data;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.util.Xml;
-
 
 import org.xmlpull.v1.XmlPullParserException;
 
