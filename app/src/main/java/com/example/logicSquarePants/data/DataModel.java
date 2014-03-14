@@ -38,7 +38,6 @@ public class DataModel {
     private boolean[][] correctNodes;
     private boolean[][] currentNodes;
 
-
     private boolean won;
 
     private boolean menuOn;
