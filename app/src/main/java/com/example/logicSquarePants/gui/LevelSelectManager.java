@@ -6,11 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-<<<<<<< HEAD
 import com.example.logicSquarePants.R;
-=======
-import com.example.app.R;
->>>>>>> origin/master
 import com.example.logicSquarePants.data.DataModel;
 import com.example.logicSquarePants.game.MainActivity;
 

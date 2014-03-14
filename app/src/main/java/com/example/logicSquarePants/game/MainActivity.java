@@ -14,11 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-<<<<<<< HEAD:app/src/main/java/com/example/logicSquarePants/game/MainActivity.java
 import com.example.logicSquarePants.R;
-=======
-import com.example.app.R;
->>>>>>> origin/master:app/src/main/java/com/example/logicSquarePants/game/MainActivity.java
 import com.example.logicSquarePants.data.DataModel;
 import com.example.logicSquarePants.data.SpriteManager;
 import com.example.logicSquarePants.data.XMLParser;
