@@ -37,6 +37,8 @@ public class DataModel {
     private boolean[][] correctNodes;
     private boolean[][] currentNodes;
 
+    private boolean won;
+
     // Singleton getter
     public static DataModel getDataModel(){
         if (dataModel == null){
@@ -56,11 +58,12 @@ public class DataModel {
             w.getDefaultDisplay().getSize(size);
             screenWidth = size.x;
             screenHeight = size.y;
-        }else{
+        } else{
             Display d = w.getDefaultDisplay();
             screenWidth = d.getWidth();
             screenHeight = d.getHeight();
         }
+        won = false;
     }
 
     public void setOnTouchListener(View.OnTouchListener onTouchListener){this.onTouchListener = onTouchListener;}
@@ -162,4 +165,11 @@ public class DataModel {
         }
     }
 
+    public void setWon(boolean won) {
+        this.won = won;
+    }
+
+    public boolean isWon() {
+        return won;
+    }
 }

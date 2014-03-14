@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,14 +33,33 @@ public class SpriteManager {
     public void update(Canvas c){
 
         DataModel dataModel = DataModel.getDataModel();
+
+        Paint paint = new Paint();
+        paint.setStrokeWidth(3);
+        paint.setTextSize(100);
+        paint.setColor(Color.BLUE);
+
+        if(dataModel.isWon()) {
+            c.drawText("You win!", 500, 500, paint);
+            return;
+        }
+
+        dataModel.setWon(true);
+        for(int i=0; i<dataModel.getRowCount(); i++) {
+            for(int j=0; j<dataModel.getColCount(); j++) {
+                if(dataModel.getCurrentNodes()[i][j] != dataModel.getCorrectNodes()[i][j]) {
+                    dataModel.setWon(false);
+                }
+            }
+        }
+
         float transX = dataModel.getTransX();
         float transY = dataModel.getTransY();
         for (Sprite s : sprites){
             s.drawSelf(c);
         }
-        Paint paint = new Paint();
-        paint.setStrokeWidth(3);
-        paint.setColor(Color.GREEN);
+
+        paint.setColor(Color.YELLOW);
 
         for (int i=0; i<dataModel.getRowCount(); i++) {
             for(int j=0; j<dataModel.getColCount(); j++) {
