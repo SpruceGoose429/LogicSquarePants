@@ -3,6 +3,7 @@ package com.example.logicSquarePants.game;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -16,8 +17,12 @@ import com.example.logicSquarePants.data.DataModel;
 public class DrawView extends View {
 
     //for zooming in and out
+    private RectF mCurrentViewport =
+            new RectF(0, 0, 10, 10);
     private ScaleGestureDetector mScaleDetector;
     private float mScaleFactor = 1.f;
+
+    private boolean moved;
 
     // for moving the map
     float lastX;
@@ -54,6 +59,7 @@ public class DrawView extends View {
         @SuppressLint("DrawAllocation") OnTouchListener otl = new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent ev) {
+                me = ev;
                 int col;
                 int row;
                 // Let the ScaleGestureDetector inspect all events.
@@ -62,19 +68,26 @@ public class DrawView extends View {
                 if (ev.getPointerCount() > 1){
                     dragTime = System.currentTimeMillis() + 200;
                 }
-                if (ev.getAction() == MotionEvent.ACTION_DOWN){
-                    lastX = DataModel.getDataModel().toUnscaledX(ev.getX());
-                    lastY = DataModel.getDataModel().toUnscaledY(ev.getY());
-                    col = dataModel.calculateCol(lastX);
-                    row = dataModel.calculateRow(lastY);
-                    if(col < 0 || col >= dataModel.getColCount() || row < 0 || row >= dataModel.getRowCount())
-                        return true;
-                    if(dataModel.getCurrentNodes()[row][col] == false) {
-                        dataModel.getCurrentNodes()[row][col] = true;
-                    } else if(dataModel.getCurrentNodes()[row][col] == true) {
-                        dataModel.getCurrentNodes()[row][col] = false;
+                if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                    moved = false;
+                }
+                if (ev.getAction() == MotionEvent.ACTION_UP){
+                    if(moved == false) {
+
+                        lastX = DataModel.getDataModel().toUnscaledX(ev.getX());
+                        lastY = DataModel.getDataModel().toUnscaledY(ev.getY());
+                        col = dataModel.calculateCol(lastX);
+                        row = dataModel.calculateRow(lastY);
+                        if (col < 0 || col >= dataModel.getColCount() || row < 0 || row >= dataModel.getRowCount())
+                            return true;
+                        if (dataModel.getCurrentNodes()[row][col] == false) {
+                            dataModel.getCurrentNodes()[row][col] = true;
+                        } else if (dataModel.getCurrentNodes()[row][col] == true) {
+                            dataModel.getCurrentNodes()[row][col] = false;
+                        }
                     }
                 } else if (ev.getAction() == MotionEvent.ACTION_MOVE && ev.getPointerCount() == 1 && System.currentTimeMillis() >= dragTime){
+                    moved = true;
                     float newX = ev.getX();
                     float newY = ev.getY();
                     if (DataModel.getDataModel().getMenuOn() == false){
@@ -130,11 +143,32 @@ public class DrawView extends View {
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+
+            lastX = detector.getCurrentSpanX();
+            lastY = detector.getCurrentSpanY();
+            return true;
+        }
+
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
+            moved = true;
             if (DataModel.getDataModel().getMenuOn()){
                 return true;
             }
+
+            float spanX = detector.getCurrentSpanX();
+            float spanY = detector.getCurrentSpanY();
+
+            float newWidth = lastX / spanX * mCurrentViewport.width();
+            float newHeight = lastY / spanX * mCurrentViewport.height();
+
+            float focusX = detector.getFocusX();
+            float focusY = detector.getFocusY();
+
+
             mScaleFactor *= detector.getScaleFactor();
             // Don't let the object get too small or too large.
             mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
