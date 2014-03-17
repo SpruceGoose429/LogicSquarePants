@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.example.logicSquarePants.R;
 import com.example.logicSquarePants.game.MainActivity;
+import com.example.logicSquarePants.gui.LevelSelectManager;
 
 /**
  * Created by John on 2/28/14.
@@ -38,6 +39,9 @@ public class DataModel {
     private boolean[][] correctNodes;
     private boolean[][] currentNodes;
 
+    private LevelSelectManager levelSelectManager;
+
+    private int maxLevelAttained;
 
     private boolean won;
 
@@ -53,10 +57,12 @@ public class DataModel {
     }
 
     private DataModel(){
-        menuOn = false;
+        menuOn = true;
+        maxLevelAttained = 1;
         transX = 0.0f;
         transY = 0.0f;
         scaleFactor = 1.0f;
+        levelSelectManager = new LevelSelectManager();
         // Find screen size
         Point size = new Point();
         WindowManager w = MainActivity.getMain().getWindowManager();
@@ -100,6 +106,9 @@ public class DataModel {
     }
     public boolean getMenuOn(){ return this.menuOn;}
     public void setMenuOn(boolean menuOn){this.menuOn = menuOn;}
+    public void setMaxLevelAttained(int maxLevelAttained){this.maxLevelAttained = maxLevelAttained;}
+    public int getMaxLevelAttained(){return this.maxLevelAttained;}
+    public LevelSelectManager getLevelSelectManager(){return this.levelSelectManager;}
 
     public boolean[][] getCorrectNodes() {
         return correctNodes;

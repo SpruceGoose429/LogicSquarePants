@@ -19,11 +19,10 @@ public class SpriteManager {
     private ArrayList<Sprite> sprites;
 
     private Sprite background;
-
     private LevelSelectManager levelSelectManager;
 
     public SpriteManager(){
-        levelSelectManager = new LevelSelectManager();
+        levelSelectManager = DataModel.getDataModel().getLevelSelectManager();
         spriteTypes = new HashMap<String, SpriteType>();
         sprites = new ArrayList<Sprite>();
     }
