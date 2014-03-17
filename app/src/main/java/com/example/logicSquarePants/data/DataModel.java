@@ -58,7 +58,7 @@ public class DataModel {
 
     private DataModel(){
         menuOn = true;
-        maxLevelAttained = 1;
+        maxLevelAttained = 5;
         transX = 0.0f;
         transY = 0.0f;
         scaleFactor = 1.0f;

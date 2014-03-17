@@ -37,12 +37,12 @@ public class LevelSelectManager {
         setLevelWidth((int) ((screenWidth - (BUFFER * (LEVEL_PER_ROW + 1))) / LEVEL_PER_ROW + .5f));
         setLevelHeight((int) ((screenHeight - (BUFFER * (LEVEL_PER_COLUMN + 1))) / LEVEL_PER_COLUMN + .5f));
 
-        for (int i = 0; i < LEVEL_PER_ROW; i++) {
-            for (int j = 0; j < LEVEL_PER_COLUMN; j++) {
+        for (int j = 0; j < LEVEL_PER_COLUMN; j++) {
+            for (int i = 0; i < LEVEL_PER_ROW; i++) {
                 count++;
                 x = (int) (((BUFFER * (i + 1) + (getLevelWidth() * i))));
                 y = (int) (((BUFFER * (j + 1) + (getLevelHeight() * j))));
-                drawLevelBitmap(c, x, y,  count + 1, DataModel.getDataModel().getMaxLevelAttained());
+                drawLevelBitmap(c, x, y,  count, DataModel.getDataModel().getMaxLevelAttained());
                 getButtonX()[i][j] = x;
                 getButtonY()[i][j] = y;
             }

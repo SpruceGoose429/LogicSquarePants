@@ -29,6 +29,8 @@ public class DrawView extends View {
     float lastY;
     long dragTime;
 
+    private MotionEvent me;
+
     public DrawView(Context context) {
         super(context);
         dragTime = System.currentTimeMillis();
@@ -108,30 +110,32 @@ public class DrawView extends View {
             this.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    int x[][] = DataModel.getDataModel().getLevelSelectManager().getButtonX();
-                    int y[][] = DataModel.getDataModel().getLevelSelectManager().getButtonY();
-                    int width = DataModel.getDataModel().getLevelSelectManager().getLevelWidth();
-                    int height = DataModel.getDataModel().getLevelSelectManager().getLevelHeight();
-                    int num_x = DataModel.getDataModel().getLevelSelectManager().getLevelPerRow();
-                    int num_y = DataModel.getDataModel().getLevelSelectManager().getLevelPerColumn();
-                    float bufferWidth = DataModel.getDataModel().getLevelSelectManager().getBuffer();
+                    if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                        int x[][] = DataModel.getDataModel().getLevelSelectManager().getButtonX();
+                        int y[][] = DataModel.getDataModel().getLevelSelectManager().getButtonY();
+                        int width = DataModel.getDataModel().getLevelSelectManager().getLevelWidth();
+                        int height = DataModel.getDataModel().getLevelSelectManager().getLevelHeight();
+                        int num_x = DataModel.getDataModel().getLevelSelectManager().getLevelPerRow();
+                        int num_y = DataModel.getDataModel().getLevelSelectManager().getLevelPerColumn();
+                        float bufferWidth = DataModel.getDataModel().getLevelSelectManager().getBuffer();
 
-                    // int buffer = DataModel.getDataModel().getLevelSelectManager();
-/*                    for (int i = 0; i < x.length; i++){
-                        for (int j = 0; j < x[0].length; j++){
-                            if (motionEvent.getX() >= x[i][j] && motionEvent.getX() <= x[i][j] + width && motionEvent.getY() >= y[i][j] && motionEvent.getY() <= y[i][j] + height){
-                                DataModel.getDataModel().getLevelSelectManager().processLevel((x.length * j) + i);
-                                return true;
+                        // int buffer = DataModel.getDataModel().getLevelSelectManager();
+                        for (int i = 0; i < x.length; i++){
+                            for (int j = 0; j < x[0].length; j++){
+                                if (motionEvent.getX() >= x[i][j] && motionEvent.getX() <= x[i][j] + width && motionEvent.getY() >= y[i][j] && motionEvent.getY() <= y[i][j] + height){
+                                    DataModel.getDataModel().getLevelSelectManager().processLevel((x.length * j) + i + 1);
+                                    return true;
+                                }
                             }
                         }
-                    }*/
 
-                    double _x=motionEvent.getX();
-                    double _y=motionEvent.getY();
-                    int i = _x/(double)(bufferWidth+width) > num_x-1? num_x-1:(int) (_x/(double)(bufferWidth+width));
-                    int j = _y/(double)(bufferWidth+height) > num_y-1? num_x-1:(int) (_y/(double)(bufferWidth+height));
-                    int level = j*3+i;
-                    DataModel.getDataModel().getLevelSelectManager().processLevel(level);
+                        double _x=motionEvent.getX();
+                        double _y=motionEvent.getY();
+                        int i = _x/(double)(bufferWidth+width) > num_x-1? num_x-1:(int) (_x/(double)(bufferWidth+width));
+                        int j = _y/(double)(bufferWidth+height) > num_y-1? num_x-1:(int) (_y/(double)(bufferWidth+height));
+                        int level = j*3+i;
+                        //DataModel.getDataModel().getLevelSelectManager().processLevel(level);
+                    }
                     return true;
                 }
             });
