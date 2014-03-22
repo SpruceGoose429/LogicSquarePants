@@ -1,10 +1,9 @@
-package com.example.app.data;
+package com.example.logicSquarePants.data;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
-import android.support.v7.appcompat.R;
 import android.util.Xml;
+
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -17,24 +16,27 @@ import java.io.IOException;
 public class XMLParser {
 
     public static final String ROW_COUNT = "rowCount";
-    public static final String COL_COUNT = "colCount";
+    public static final String COL_COUNT = "columnCount";
     public static final String ROW = "row";
-    public static final String NODE = "node";
+    public static final String NODE = "Node";
 
     public void parseDataFromXML(Resources res, int xml) {
 
         DataModel model = DataModel.getDataModel();
         boolean tempArr[][] = null;
+        boolean tempArr2[][] = null;
         int rowIndex = -1;
 
         try {
 
             XmlResourceParser parser = res.getXml(xml);
             parser.next();
-
             int eventType = parser.getEventType();
+
             while (eventType != XmlResourceParser.END_DOCUMENT) {
+
                 if(eventType == XmlResourceParser.START_TAG) {
+
                     if(parser.getName().equals(ROW_COUNT)) {
                         parser.next();
                         model.setRowCount(Integer.parseInt(parser.getText()));
@@ -42,6 +44,7 @@ public class XMLParser {
                         parser.next();
                         model.setColumnCount(Integer.parseInt(parser.getText()));
                         tempArr = new boolean[model.getRowCount()][model.getColCount()];
+                        tempArr2 = new boolean[model.getRowCount()][model.getColCount()];
                     } else if(parser.getName().equals(ROW)) {
                         rowIndex++;
                     } else if(parser.getName().equals(NODE)) {
@@ -57,6 +60,7 @@ public class XMLParser {
 
         }
 
-        model.setNodes(tempArr);
+        model.setCorrectNodes(tempArr);
+        model.setCurrentNodes(tempArr2);
     }
 }

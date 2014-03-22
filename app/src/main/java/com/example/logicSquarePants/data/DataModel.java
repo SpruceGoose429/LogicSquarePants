@@ -1,4 +1,4 @@
-package com.example.app.data;
+package com.example.logicSquarePants.data;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,7 +9,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.example.app.game.MainActivity;
+import com.example.logicSquarePants.R;
+import com.example.logicSquarePants.game.MainActivity;
 
 /**
  * Created by John on 2/28/14.
@@ -20,19 +21,28 @@ public class DataModel {
     private static DataModel dataModel;
 
     // Screen stuff
-    private static int screenWidth;
-    private static int screenHeight;
+    public static int screenWidth;
+    public static int screenHeight;
     private View.OnTouchListener onTouchListener;
     // current translation
     private float transX;
     private float transY;
     // current scale of the screen
     private float scaleFactor;
+    public static final int NODE_WIDTH = 200;
+    public static final int NODE_HEIGHT = 200;
 
     // Game specific stuff
     private int rowCount;
     private int colCount;
-    private boolean[][] nodes;
+    private boolean[][] correctNodes;
+    private boolean[][] currentNodes;
+
+
+    private boolean won;
+
+    private boolean menuOn;
+
 
     // Singleton getter
     public static DataModel getDataModel(){
@@ -43,6 +53,7 @@ public class DataModel {
     }
 
     private DataModel(){
+        menuOn = false;
         transX = 0.0f;
         transY = 0.0f;
         scaleFactor = 1.0f;
@@ -53,11 +64,12 @@ public class DataModel {
             w.getDefaultDisplay().getSize(size);
             screenWidth = size.x;
             screenHeight = size.y;
-        }else{
+        } else{
             Display d = w.getDefaultDisplay();
             screenWidth = d.getWidth();
             screenHeight = d.getHeight();
         }
+        won = false;
     }
 
     public void setOnTouchListener(View.OnTouchListener onTouchListener){this.onTouchListener = onTouchListener;}
@@ -71,25 +83,26 @@ public class DataModel {
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
     }
-
     public void setColumnCount(int colCount) {
         this.colCount = colCount;
     }
-
-    public void setNodes(boolean[][] nodes) {
-        this.nodes = nodes;
+    public void setCorrectNodes(boolean[][] nodes) {
+        this.correctNodes = nodes;
     }
-
+    public void setCurrentNodes(boolean[][] nodes) {
+        this.currentNodes = nodes;
+    }
     public int getRowCount() {
         return rowCount;
     }
-
     public int getColCount() {
         return colCount;
     }
+    public boolean getMenuOn(){ return this.menuOn;}
+    public void setMenuOn(boolean menuOn){this.menuOn = menuOn;}
 
-    public boolean[][] getNodes() {
-        return nodes;
+    public boolean[][] getCorrectNodes() {
+        return correctNodes;
     }
 
     public static float toRelativeWidth(float x){
@@ -103,6 +116,18 @@ public class DataModel {
     }
     public static float toAbsoluteHeight(float y){
         return (y * (float)screenHeight / 100.0f);
+    }
+
+    public int calculateCol(float x) {
+        return (int)(x - 10) / NODE_WIDTH;
+    }
+
+    public int calculateRow(float y) {
+        return (int)(y - 10 ) / NODE_HEIGHT;
+    }
+
+    public boolean[][] getCurrentNodes() {
+        return currentNodes;
     }
 
     public static Bitmap convertImage565(Bitmap image){
@@ -148,4 +173,11 @@ public class DataModel {
         }
     }
 
+    public void setWon(boolean won) {
+        this.won = won;
+    }
+
+    public boolean isWon() {
+        return won;
+    }
 }
