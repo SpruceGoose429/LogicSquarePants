@@ -21,11 +21,10 @@ public class SpriteManager {
     private ArrayList<Sprite> sprites;
 
     private Sprite background;
-
     private LevelSelectManager levelSelectManager;
 
     public SpriteManager(){
-        levelSelectManager = new LevelSelectManager();
+        levelSelectManager = DataModel.getDataModel().getLevelSelectManager();
         spriteTypes = new HashMap<String, SpriteType>();
         sprites = new ArrayList<Sprite>();
     }
@@ -56,6 +55,8 @@ public class SpriteManager {
             paint.setStrokeWidth(3);
             paint.setTextSize(100);
             paint.setColor(Color.BLUE);
+
+            //test change
 
             if(dataModel.isWon()) {
                 c.drawText("You win!", 500, 500, paint);

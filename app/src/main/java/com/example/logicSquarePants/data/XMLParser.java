@@ -26,7 +26,6 @@ public class XMLParser {
         boolean tempArr[][] = null;
         boolean tempArr2[][] = null;
         int rowIndex = -1;
-
         try {
 
             XmlResourceParser parser = res.getXml(xml);

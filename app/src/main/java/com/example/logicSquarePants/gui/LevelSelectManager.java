@@ -5,12 +5,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.widget.Toast;
 
 import com.example.logicSquarePants.R;
 import com.example.logicSquarePants.data.DataModel;
+import com.example.logicSquarePants.data.SpriteManager;
 import com.example.logicSquarePants.game.MainActivity;
-
-import java.util.logging.Level;
 
 /**
  * Created by John on 3/7/14.
@@ -18,48 +19,121 @@ import java.util.logging.Level;
 public class LevelSelectManager {
     private static final float BUFFER = 5;
     private static final int LEVEL_PER_ROW = 3;
-    private static final int NUM_OF_COLUMNS = 5;
+    private static final int LEVEL_PER_COLUMN = 5;
 
+    private int titleHeight;
     private int levelWidth;
     private int levelHeight;
 
-    public LevelSelectManager(){
+    private Bitmap title;
 
+    private int[][] buttonX;
+    private int[][] buttonY;
+
+    private int r;
+    private int g;
+    private int b;
+    private int rD;
+    private int gD;
+    private int bD;
+    private int iterations;
+
+    public LevelSelectManager(){
+        setButtonX(new int[LEVEL_PER_ROW][LEVEL_PER_COLUMN]);
+        setButtonY(new int[LEVEL_PER_ROW][LEVEL_PER_COLUMN]);
+
+        iterations = 0;
+        r = (int)(Math.random() * 256);
+        g = (int)(Math.random() * 256);
+        b = (int)(Math.random() * 256);
+        rD = (int)(Math.random() * 256);
+        gD = (int)(Math.random() * 256);
+        bD = (int)(Math.random() * 256);
     }
-    public void showScreen(Canvas c, int maxLevelAttained){
+    public void showScreen(Canvas c, int maxLevelAttained) {
+        titleHeight = (int)(DataModel.toAbsoluteHeight(10) +.5f);
+        title = BitmapFactory.decodeResource(MainActivity.getMain().getResources(), R.drawable.level_select_label);
+
         int count = 0;
+        int x, y; // top-left position for drawing level
         int screenWidth = DataModel.screenWidth;
         int screenHeight = DataModel.screenHeight;
-        levelWidth = (int) ((screenWidth - (BUFFER * (LEVEL_PER_ROW + 1))) / LEVEL_PER_ROW + .5f);
-        levelHeight = (int) ((screenHeight - (BUFFER * (NUM_OF_COLUMNS + 1))) / NUM_OF_COLUMNS + .5f);
-        for (int i = 0; i < LEVEL_PER_ROW; i++){
-            count++;
-            drawLevelBitmap(c, (int) (((BUFFER * (i + 1) + (levelWidth * i)))), (int) BUFFER, i + 1, 1);
+        setLevelWidth((int) ((screenWidth - (BUFFER * (LEVEL_PER_ROW + 1))) / LEVEL_PER_ROW + .5f));
+        setLevelHeight((int) ((screenHeight - titleHeight - (BUFFER * (LEVEL_PER_COLUMN + 1))) / LEVEL_PER_COLUMN + .5f));
+
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        c.drawRect(0, 0, screenWidth, screenHeight, p);
+        p.setColor(Color.argb(100, r, g, b));
+        c.drawRect(0, titleHeight, screenWidth, screenHeight, p);
+        p.setColor(Color.argb(150, r, g, b));
+        c.drawRect(0,0, screenWidth, titleHeight, p);
+        p.setColor(Color.BLACK);
+        c.drawBitmap(title, null, new Rect((int)(DataModel.toAbsoluteWidth(4) + .5f), (int)(DataModel.toAbsoluteHeight(2) + .5f), (int)(DataModel.toAbsoluteWidth(96) + .5f), (int)(titleHeight - DataModel.toAbsoluteHeight(2) + .5f)), p);
+
+        for (int j = 0; j < LEVEL_PER_COLUMN; j++) {
+            for (int i = 0; i < LEVEL_PER_ROW; i++) {
+                count++;
+                x = (int) (((BUFFER * (i + 1) + (getLevelWidth() * i))));
+                y = (int) (((BUFFER * (j + 1) + (getLevelHeight() * j))));
+                drawLevelBitmap(c, x, y,  count, DataModel.getDataModel().getMaxLevelAttained());
+                getButtonX()[i][j] = x;
+                getButtonY()[i][j] = y;
+            }
+        }
+        // Update the colors
+        if (iterations % 4 == 0){
+            if (r < rD){
+                r++;
+            } else if (r > rD){
+                r--;
+            } else {
+                rD = (int)(Math.random() * 256);
+            }
+            if (g < gD){
+                g++;
+            } else if (g > gD){
+                g--;
+            } else {
+                gD = (int)(Math.random() * 256);
+            }
+            if (b < bD){
+                b++;
+            } else if (b > bD){
+                b--;
+            } else {
+                bD = (int)(Math.random() * 256);
+            }
+        }
+        iterations++;
+        if (iterations == Integer.MAX_VALUE){
+            iterations = 0;
         }
     }
+
     private void drawLevelBitmap(Canvas c, int x, int y, int level, int maxLevelAttained){
-        Bitmap b;
+        Bitmap b = null;
         if (maxLevelAttained < level){
-             b = BitmapFactory.decodeResource(MainActivity.getMain().getResources(), R.drawable.lock);
-             b = Bitmap.createScaledBitmap(b, levelWidth, levelHeight, true);
+            b = BitmapFactory.decodeResource(MainActivity.getMain().getResources(), R.drawable.lock);
+            b = Bitmap.createScaledBitmap(b, getLevelWidth(), getLevelHeight(), true);
 
         } else {
             b = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+            b = Bitmap.createScaledBitmap(b, getLevelWidth(), getLevelHeight(), true);
             Canvas bitmapCanvas = new Canvas(b);
-            b = Bitmap.createScaledBitmap(b, levelWidth, levelHeight, true);
-            bitmapCanvas = new Canvas(b);
 
-            Paint p=createAvailableLevel(level,Color.WHITE,Color.RED);
-            bitmapCanvas.drawRect(0, 0, 1, 1, p);
-            bitmapCanvas.drawText(String.valueOf(level), levelWidth/5, 300, p);
-
-            p=createAvailableLevel(level+1,Color.WHITE,Color.GREEN);
-            bitmapCanvas.drawRect(100, 0, 1, 1, p);
-            bitmapCanvas.drawText(String.valueOf(level+1), levelWidth*2, 300, p);
-
-
+            int width = (int)(levelWidth * .5f + .5f);
+            int height = (int)(levelHeight * .7f + .5f);
+            DigitsManager.getDigitsManager().drawNumber(bitmapCanvas, level, (int)((levelWidth/2.0f) - (width/2.0f) + .5f), (int)((levelHeight/2.0f) - (height/2.0f) + .5f), width, height);
         }
-        c.drawBitmap(b, x, y, new Paint());
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        p.setStrokeWidth(1);
+        c.drawLine(x, titleHeight + y, x + levelWidth, titleHeight + y, p);
+        c.drawLine(x, titleHeight + y, x, titleHeight + y + levelHeight, p);
+        c.drawLine(x, titleHeight + y + levelHeight, x + levelWidth, titleHeight + y + levelHeight, p);
+        c.drawLine(x + levelWidth, titleHeight + y, x + levelWidth, titleHeight + y + levelHeight, p);
+        c.drawBitmap(b, x, titleHeight + y, p);
     }
     
     public Paint createAvailableLevel(int level, int bg, int text){
@@ -70,5 +144,47 @@ public class LevelSelectManager {
         p.setTextSize(300);
         return p;
     }
+
+    public int getLevelWidth() {
+        return levelWidth;
+    }
+
+    public void setLevelWidth(int levelWidth) {
+        this.levelWidth = levelWidth;
+    }
+
+    public int getLevelHeight() {
+        return levelHeight;
+    }
+
+    public void setLevelHeight(int levelHeight) {
+        this.levelHeight = levelHeight;
+    }
+
+    public int[][] getButtonX() {
+        return buttonX;
+    }
+
+    public void setButtonX(int[][] buttonX) {
+        this.buttonX = buttonX;
+    }
+
+    public int[][] getButtonY() {
+        return buttonY;
+    }
+
+    public void setButtonY(int[][] buttonY) {
+        this.buttonY = buttonY;
+    }
+    public void processLevel(int level){
+        Toast.makeText(MainActivity.getMain().getApplicationContext(), String.valueOf(level), Toast.LENGTH_SHORT).show();
+    }
+
+    public int  getLevelPerRow(){ return this.LEVEL_PER_ROW;}
+
+    public int  getLevelPerColumn(){ return this.LEVEL_PER_COLUMN;}
+
+    public float  getBuffer(){ return this.BUFFER;}
+
 
 }
