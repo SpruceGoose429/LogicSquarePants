@@ -164,6 +164,13 @@ public class DataModel {
         return y;
     }
 
+    public void resetGame(){
+        for(int i=0; i< getRowCount(); i++) {
+            for (int j = 0; j < getColCount(); j++) {
+                getCurrentNodes()[i][j] = false;
+            }
+        }
+    }
     public void examineBounds(){
         if (scaleFactor < 1.0f){
             scaleFactor = 1.0f;
@@ -189,4 +196,5 @@ public class DataModel {
     public boolean isWon() {
         return won;
     }
+
 }

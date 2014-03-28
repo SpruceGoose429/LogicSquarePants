@@ -75,14 +75,14 @@ public class LevelSelectManager {
             for (int i = 0; i < LEVEL_PER_ROW; i++) {
                 count++;
                 x = (int) (((BUFFER * (i + 1) + (getLevelWidth() * i))));
-                y = (int) (((BUFFER * (j + 1) + (getLevelHeight() * j))));
+                y = titleHeight + (int) (((BUFFER * (j + 1) + (getLevelHeight() * j))));
                 drawLevelBitmap(c, x, y,  count, DataModel.getDataModel().getMaxLevelAttained());
                 getButtonX()[i][j] = x;
                 getButtonY()[i][j] = y;
             }
         }
         // Update the colors
-        if (iterations % 4 == 0){
+        if (iterations % 1 == 0){
             if (r < rD){
                 r++;
             } else if (r > rD){
@@ -129,11 +129,11 @@ public class LevelSelectManager {
         Paint p = new Paint();
         p.setColor(Color.WHITE);
         p.setStrokeWidth(1);
-        c.drawLine(x, titleHeight + y, x + levelWidth, titleHeight + y, p);
-        c.drawLine(x, titleHeight + y, x, titleHeight + y + levelHeight, p);
-        c.drawLine(x, titleHeight + y + levelHeight, x + levelWidth, titleHeight + y + levelHeight, p);
-        c.drawLine(x + levelWidth, titleHeight + y, x + levelWidth, titleHeight + y + levelHeight, p);
-        c.drawBitmap(b, x, titleHeight + y, p);
+        c.drawLine(x, y, x + levelWidth, y, p);
+        c.drawLine(x, y, x, titleHeight + y + levelHeight, p);
+        c.drawLine(x, y + levelHeight, x + levelWidth, y + levelHeight, p);
+        c.drawLine(x + levelWidth, y, x + levelWidth, y + levelHeight, p);
+        c.drawBitmap(b, x, y, p);
     }
     
     public Paint createAvailableLevel(int level, int bg, int text){
@@ -177,7 +177,8 @@ public class LevelSelectManager {
         this.buttonY = buttonY;
     }
     public void processLevel(int level){
-        Toast.makeText(MainActivity.getMain().getApplicationContext(), String.valueOf(level), Toast.LENGTH_SHORT).show();
+        DataModel.getDataModel().setMenuOn(false);
+        //Toast.makeText(MainActivity.getMain().getApplicationContext(), String.valueOf(level), Toast.LENGTH_SHORT).show();
     }
 
     public int  getLevelPerRow(){ return this.LEVEL_PER_ROW;}

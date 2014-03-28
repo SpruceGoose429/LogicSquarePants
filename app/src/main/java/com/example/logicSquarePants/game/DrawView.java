@@ -30,6 +30,8 @@ public class DrawView extends View {
     float lastY;
     long dragTime;
 
+    private float downX;
+    private float downY;
     private MotionEvent me;
 
     public DrawView(Context context) {
@@ -75,6 +77,10 @@ public class DrawView extends View {
                 }
                 if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                     moved = false;
+                    downX = ev.getX();
+                    downY = ev.getY();
+                    lastX = downX;
+                    lastY = downY;
                 }
                 if (ev.getAction() == MotionEvent.ACTION_UP){
                     if(moved == false) {
@@ -92,7 +98,9 @@ public class DrawView extends View {
                         }
                     }
                 } else if (ev.getAction() == MotionEvent.ACTION_MOVE && ev.getPointerCount() == 1 && System.currentTimeMillis() >= dragTime){
-                    moved = true;
+                    if (Math.sqrt(Math.pow(ev.getX() - downX, 2) + Math.pow(ev.getY() - downY, 2)) > 15) {
+                        moved = true;
+                    }
                     float newX = ev.getX();
                     float newY = ev.getY();
                     if (DataModel.getDataModel().getMenuOn() == false){

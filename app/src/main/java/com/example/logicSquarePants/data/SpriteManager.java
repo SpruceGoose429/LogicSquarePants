@@ -23,7 +23,12 @@ public class SpriteManager {
     private Sprite background;
     private LevelSelectManager levelSelectManager;
 
+    private int buffer;
+    private boolean wonDisplayed;
+
     public SpriteManager(){
+        wonDisplayed = false;
+        buffer = (int)(DataModel.toAbsoluteWidth(3) + .5f);
         levelSelectManager = DataModel.getDataModel().getLevelSelectManager();
         spriteTypes = new HashMap<String, SpriteType>();
         sprites = new ArrayList<Sprite>();
@@ -37,8 +42,7 @@ public class SpriteManager {
     }
 
     public void update(Canvas c){
-
-        DataModel dataModel = DataModel.getDataModel();
+        final DataModel dataModel = DataModel.getDataModel();
         float transX = dataModel.getTransX();
         float transY = dataModel.getTransY();
         for (Sprite s : sprites){
@@ -57,9 +61,22 @@ public class SpriteManager {
             paint.setColor(Color.BLUE);
 
             //test change
-
             if(dataModel.isWon()) {
                 c.drawText("You win!", 500, 500, paint);
+                if (wonDisplayed == false){
+                    wonDisplayed = true;
+                } else {
+                    MainActivity.getMain().getScreen().setOnTouchListener(null);
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    DataModel.getDataModel().setWon(false);
+                    DataModel.getDataModel().setMenuOn(true);
+                    DataModel.getDataModel().resetGame();
+                    wonDisplayed = false;
+                }
                 return;
             }
 
@@ -72,22 +89,33 @@ public class SpriteManager {
                 }
             }
 
+            // Generate top numbers grid
+//            ArrayList<Integer>[] top = new ArrayList[dataModel.getColCount()];
+//            for (int i = 0; i < top.length; i++){
+//                top[i] = new ArrayList<Integer>();
+//                for (int j = 0; j < dataModel.getCorrectNodes()[i].length; j++){
+//
+//                }
+//            }
+
+
+
             paint.setColor(Color.YELLOW);
 
             for (int i=0; i<dataModel.getRowCount(); i++) {
                 for(int j=0; j<dataModel.getColCount(); j++) {
                     if(dataModel.getCurrentNodes()[i][j] == true) {
-                        c.drawRect(10 + j * DataModel.NODE_WIDTH + transX, 10 + i * DataModel.NODE_HEIGHT + transY, 10 + (j + 1) * DataModel.NODE_WIDTH + transX, 10 + (i + 1) * DataModel.NODE_HEIGHT + transY, paint);
+                        c.drawRect(buffer + j * DataModel.NODE_WIDTH + transX, buffer + i * DataModel.NODE_HEIGHT + transY, buffer + (j + 1) * DataModel.NODE_WIDTH + transX, buffer + (i + 1) * DataModel.NODE_HEIGHT + transY, paint);
                     }
                 }
             }
             paint.setColor(Color.BLACK);
             for (int i = 0 ; i <= DataModel.getDataModel().getColCount(); i++){
-                c.drawLine(i * DataModel.NODE_WIDTH + 10 + transX, 10 + transY, i * DataModel.NODE_WIDTH + 10 + transX, DataModel.NODE_WIDTH * DataModel.getDataModel().getRowCount() + 10 + transY, paint);
+                c.drawLine(i * DataModel.NODE_WIDTH + buffer + transX, buffer + transY, i * DataModel.NODE_WIDTH + buffer + transX, DataModel.NODE_WIDTH * DataModel.getDataModel().getRowCount() + buffer + transY, paint);
             }
 
             for (int j = 0 ; j <= DataModel.getDataModel().getRowCount(); j++) {
-                c.drawLine(10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, DataModel.NODE_HEIGHT * DataModel.getDataModel().getColCount() + 10 + transX, j * DataModel.NODE_HEIGHT + 10 + transY, paint);
+                c.drawLine(buffer + transX, j * DataModel.NODE_HEIGHT + buffer + transY, DataModel.NODE_HEIGHT * DataModel.getDataModel().getColCount() + buffer + transX, j * DataModel.NODE_HEIGHT + buffer + transY, paint);
             }
         }
     }

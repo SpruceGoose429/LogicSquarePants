@@ -29,12 +29,14 @@ public class MainActivity extends ActionBarActivity {
     private static MainActivity main;
     private SpriteManager spriteManager;
     private AudioManager audioManager;
+    private DrawView screen;
 
     public static MainActivity getMain(){
         return main;
     }
     public SpriteManager getSpriteManager(){return this.spriteManager;}
     public AudioManager getAudioManager() {return audioManager;}
+    public DrawView getScreen(){return this.screen;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         main = this;
-        DrawView screen = new DrawView(this);
+        screen = new DrawView(this);
         setContentView(screen);
 
         ///////////////////////////////////preliminaries done
