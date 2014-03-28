@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import com.example.logicSquarePants.data.AudioManager;
 import com.example.logicSquarePants.data.DataModel;
 
 /**
@@ -61,6 +62,8 @@ public class DrawView extends View {
         @SuppressLint("DrawAllocation") OnTouchListener otl = new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent ev) {
+                AudioManager audioManager = MainActivity.getMain().getAudioManager();
+                audioManager.play("select");
                 me = ev;
                 int col;
                 int row;

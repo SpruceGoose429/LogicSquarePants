@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.logicSquarePants.R;
+import com.example.logicSquarePants.data.AudioManager;
 import com.example.logicSquarePants.data.DataModel;
 import com.example.logicSquarePants.data.SpriteManager;
 import com.example.logicSquarePants.data.XMLParser;
@@ -26,11 +28,13 @@ public class MainActivity extends ActionBarActivity {
 
     private static MainActivity main;
     private SpriteManager spriteManager;
+    private AudioManager audioManager;
 
     public static MainActivity getMain(){
         return main;
     }
     public SpriteManager getSpriteManager(){return this.spriteManager;}
+    public AudioManager getAudioManager() {return audioManager;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class MainActivity extends ActionBarActivity {
         // init the DataModel so it knows screen dimensions
         DataModel.getDataModel();
         spriteManager = new SpriteManager();
+        audioManager = new AudioManager();
+        loadMusic();
         XMLParser parser = new XMLParser();
         parser.parseDataFromXML(getResources(), R.xml.level1);
         Bitmap b = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
@@ -57,6 +63,11 @@ public class MainActivity extends ActionBarActivity {
         backgroundCanvas.drawRect(0,0,1,1, p);
         spriteManager.initBackground(b);
 
+    }
+
+    public void loadMusic()
+    {
+        audioManager.loadAudio("select", R.raw.select);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.widget.Toast;
 
 import com.example.logicSquarePants.R;
@@ -20,8 +21,11 @@ public class LevelSelectManager {
     private static final int LEVEL_PER_ROW = 3;
     private static final int LEVEL_PER_COLUMN = 5;
 
+    private int titleHeight;
     private int levelWidth;
     private int levelHeight;
+
+    private Bitmap title;
 
     private int[][] buttonX;
     private int[][] buttonY;
@@ -45,21 +49,27 @@ public class LevelSelectManager {
         rD = (int)(Math.random() * 256);
         gD = (int)(Math.random() * 256);
         bD = (int)(Math.random() * 256);
-
     }
     public void showScreen(Canvas c, int maxLevelAttained) {
+        titleHeight = (int)(DataModel.toAbsoluteHeight(10) +.5f);
+        title = BitmapFactory.decodeResource(MainActivity.getMain().getResources(), R.drawable.level_select_label);
+
         int count = 0;
         int x, y; // top-left position for drawing level
         int screenWidth = DataModel.screenWidth;
         int screenHeight = DataModel.screenHeight;
         setLevelWidth((int) ((screenWidth - (BUFFER * (LEVEL_PER_ROW + 1))) / LEVEL_PER_ROW + .5f));
-        setLevelHeight((int) ((screenHeight - (BUFFER * (LEVEL_PER_COLUMN + 1))) / LEVEL_PER_COLUMN + .5f));
+        setLevelHeight((int) ((screenHeight - titleHeight - (BUFFER * (LEVEL_PER_COLUMN + 1))) / LEVEL_PER_COLUMN + .5f));
 
         Paint p = new Paint();
         p.setColor(Color.WHITE);
         c.drawRect(0, 0, screenWidth, screenHeight, p);
         p.setColor(Color.argb(100, r, g, b));
-        c.drawRect(0, 0, screenWidth, screenHeight, p);
+        c.drawRect(0, titleHeight, screenWidth, screenHeight, p);
+        p.setColor(Color.argb(150, r, g, b));
+        c.drawRect(0,0, screenWidth, titleHeight, p);
+        p.setColor(Color.BLACK);
+        c.drawBitmap(title, null, new Rect((int)(DataModel.toAbsoluteWidth(4) + .5f), (int)(DataModel.toAbsoluteHeight(2) + .5f), (int)(DataModel.toAbsoluteWidth(96) + .5f), (int)(titleHeight - DataModel.toAbsoluteHeight(2) + .5f)), p);
 
         for (int j = 0; j < LEVEL_PER_COLUMN; j++) {
             for (int i = 0; i < LEVEL_PER_ROW; i++) {
@@ -112,18 +122,18 @@ public class LevelSelectManager {
             b = Bitmap.createScaledBitmap(b, getLevelWidth(), getLevelHeight(), true);
             Canvas bitmapCanvas = new Canvas(b);
 
-            int width = (int)(levelWidth * .6f + .5f);
+            int width = (int)(levelWidth * .5f + .5f);
             int height = (int)(levelHeight * .7f + .5f);
             DigitsManager.getDigitsManager().drawNumber(bitmapCanvas, level, (int)((levelWidth/2.0f) - (width/2.0f) + .5f), (int)((levelHeight/2.0f) - (height/2.0f) + .5f), width, height);
         }
         Paint p = new Paint();
         p.setColor(Color.WHITE);
         p.setStrokeWidth(1);
-        c.drawLine(x, y, x + levelWidth, y, p);
-        c.drawLine(x, y, x, y + levelHeight, p);
-        c.drawLine(x, y + levelHeight, x + levelWidth, y + levelHeight, p);
-        c.drawLine(x + levelWidth, y, x + levelWidth, y + levelHeight, p);
-        c.drawBitmap(b, x, y, p);
+        c.drawLine(x, titleHeight + y, x + levelWidth, titleHeight + y, p);
+        c.drawLine(x, titleHeight + y, x, titleHeight + y + levelHeight, p);
+        c.drawLine(x, titleHeight + y + levelHeight, x + levelWidth, titleHeight + y + levelHeight, p);
+        c.drawLine(x + levelWidth, titleHeight + y, x + levelWidth, titleHeight + y + levelHeight, p);
+        c.drawBitmap(b, x, titleHeight + y, p);
     }
     
     public Paint createAvailableLevel(int level, int bg, int text){

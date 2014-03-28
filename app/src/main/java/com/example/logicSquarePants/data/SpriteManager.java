@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.example.logicSquarePants.R;
+import com.example.logicSquarePants.game.MainActivity;
 import com.example.logicSquarePants.gui.LevelSelectManager;
 
 import java.util.ArrayList;
